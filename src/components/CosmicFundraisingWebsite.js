@@ -191,15 +191,26 @@ const CosmicFundraisingWebsite = () => {
           className="text-center mb-16"
           style={{ transform: `translateY(${scrollY * 0.1}px)` }}
         >
-          <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 animate-pulse font-cosmic">
-            ✨ QUYÊN GÓP NHÂN ÁI ✨
+          <h1
+            className="text-3xl md:text-5xl font-bold mb-4 text-center
+             bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400
+             bg-clip-text text-transparent animate-pulse"
+            style={{
+              fontFamily: '"Rowdies","Potta One", sans-serif',
+              textShadow:
+                "0 0 6px rgba(255, 178, 220, 1), 0 0 16px rgba(171,71,188,0.6), 0 0 22px rgba(244,143,177,0.6)",
+              lineHeight: "1.2",
+              letterSpacing: "0.05em",
+              animation:
+                "pulse 2s infinite ease-in-out, glow 3s infinite alternate",
+            }}
+          >
+            QUỸ VƯỜN MÍT <br /> FC MISTHY
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto">
-            Cùng nhau xây dựng tương lai tươi sáng cho cộng đồng
-          </p>
+
           <div className="flex justify-center items-center mt-6 space-x-2">
             <Star className="w-6 h-6 text-yellow-400 animate-spin" />
-            <Star className="w-4 h-4 text-yellow-300 animate-pulse" />
+            {/* <Star className="w-4 h-4 text-yellow-300 animate-pulse" /> */}
             <Star
               className="w-6 h-6 text-yellow-400 animate-spin"
               style={{ animationDelay: "1s" }}
@@ -213,14 +224,27 @@ const CosmicFundraisingWebsite = () => {
           style={{ transform: `translateY(${scrollY * 0.05}px)` }}
         >
           <div className="text-center mb-8">
-            <Target className="w-12 h-12 text-cyan-400 mx-auto mb-4 animate-pulse" />
-            <h2 className="text-3xl font-bold text-cyan-400 mb-2">
-              Tiến Độ Quyên Góp
+            <h2
+              className="text-3xl font-bold text-cyan-400 mb-2"
+              style={{
+                fontFamily: '"Rowdies","Potta One", sans-serif',
+                textShadow: `
+      0 0 6px rgba(0, 255, 255, 0.9),   /* bright aqua glow */
+      0 0 12px rgba(0, 200, 255, 0.7),  /* deeper blue glow */
+      0 0 20px rgba(173, 216, 230, 0.6) /* soft light-blue halo */
+    `,
+                lineHeight: "1.2",
+                letterSpacing: "0.05em",
+                animation:
+                  "pulse 0.5s infinite ease-in-out, glow 3s infinite alternate",
+              }}
+            >
+              SUPPER FEST PROJECT
             </h2>
+
             <p className="text-4xl font-bold text-white mb-4">
               {formatCurrency(donations.total)}
             </p>
-            <p className="text-gray-300">đã quyên góp được</p>
           </div>
 
           <div className="relative mb-6">
@@ -237,7 +261,7 @@ const CosmicFundraisingWebsite = () => {
               </div>
             </div>
             <div className="text-center text-sm text-gray-300">
-              {getProgressPercentage().toFixed(1)}% hoàn thành
+              {getProgressPercentage().toFixed(1)}% progress
             </div>
           </div>
 
