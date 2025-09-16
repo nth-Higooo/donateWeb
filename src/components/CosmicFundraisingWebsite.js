@@ -8,6 +8,8 @@ import {
   Gift,
   Star,
 } from "lucide-react";
+import CountUp from "react-countup";
+import DonationSection from "./DonateSection";
 
 const CosmicFundraisingWebsite = () => {
   const [donations, setDonations] = useState({
@@ -400,6 +402,21 @@ const CosmicFundraisingWebsite = () => {
           </div>
         </div>
 
+        <div
+          className="bg-black/30 backdrop-blur-lg border border-pink-500/30 rounded-3xl p-6 mb-12 shadow-2xl glass text-center"
+          style={{ transform: `translateY(${scrollY * 0.04}px)` }}
+        >
+          <h2
+            className="text-3xl font-bold mb-4 text-pink-400"
+            style={{ fontFamily: '"Rowdies","Potta One", sans-serif' }}
+          >
+            QUỸ TÔN HOA SEN
+          </h2>
+          <div className="text-5xl font-extrabold text-yellow-400 drop-shadow-lg">
+            <CountUp end={50000000} duration={5} separator="," suffix=" VND" />
+          </div>
+        </div>
+
         {/* Top 10 Donors Card */}
         <div
           className="bg-black/30 backdrop-blur-lg border border-purple-500/30 rounded-3xl p-8 mb-12 shadow-2xl glass"
@@ -407,7 +424,10 @@ const CosmicFundraisingWebsite = () => {
         >
           <div className="text-center mb-8">
             <Users className="w-8 h-8 text-yellow-400 mx-auto mb-4 animate-pulse" />
-            <h2 className="text-3xl font-bold text-yellow-400">
+            <h2
+              className="text-3xl font-bold mb-4 text-yellow-400"
+              style={{ fontFamily: '"Rowdies","Potta One", sans-serif' }}
+            >
               🏆 TOP 10 DONNORS 🏆
             </h2>
           </div>
@@ -473,76 +493,7 @@ const CosmicFundraisingWebsite = () => {
             </button>
           </div>
         </div>
-
-        {/* Bank Transfer Info Card */}
-        <div
-          className="bg-black/30 backdrop-blur-lg border border-purple-500/30 rounded-3xl p-8 shadow-2xl glass"
-          style={{ transform: `translateY(${scrollY * 0.01}px)` }}
-        >
-          <h2 className="text-3xl font-bold text-center text-green-400 mb-8">
-            💳 Thông Tin Chuyển Khoản
-          </h2>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="space-y-6">
-              <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-600/30">
-                <h3 className="text-xl font-bold text-green-400 mb-4">
-                  Thông Tin Tài Khoản
-                </h3>
-                <div className="space-y-3">
-                  <div>
-                    <span className="text-gray-300">Số tài khoản:</span>
-                    <div className="text-2xl font-bold text-white bg-gray-700/50 rounded-lg p-3 mt-1 font-mono">
-                      0123 456 789
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-gray-300">Chủ tài khoản:</span>
-                    <div className="text-lg font-semibold text-white">
-                      QUỸ TỪ THIỆN NHÂN ÁI
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-gray-300">Ngân hàng:</span>
-                    <div className="text-lg font-semibold text-white">
-                      Vietcombank - CN HCM
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-gray-300">
-                      Nội dung chuyển khoản:
-                    </span>
-                    <div className="text-lg text-yellow-400">
-                      Ủng hộ + Tên + SĐT
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-center">
-              <div className="bg-white rounded-xl p-6 inline-block border border-gray-300">
-                <div className="w-48 h-48 bg-gradient-to-br from-gray-900 to-gray-700 rounded-lg flex items-center justify-center mb-4">
-                  <div className="text-white text-center">
-                    <div className="text-4xl mb-2">📱</div>
-                    <div className="text-sm">QR Code</div>
-                    <div className="text-xs">Chuyển khoản nhanh</div>
-                  </div>
-                </div>
-                <p className="text-gray-800 font-semibold">
-                  Quét mã để chuyển khoản
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-8 text-center">
-            <p className="text-gray-300 max-w-2xl mx-auto">
-              Mọi khoản đóng góp đều được ghi nhận và sử dụng minh bạch cho các
-              hoạt động từ thiện. Cảm ơn tấm lòng hảo tâm của bạn! ❤️
-            </p>
-          </div>
-        </div>
+        <DonationSection />
 
         {/* Footer */}
         <div className="text-center mt-16 pb-8">
