@@ -4,11 +4,11 @@
 
 /* Custom scrollbar for cosmic theme */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 2px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(31, 41, 55, 0.5);
+  background: rgba(255, 255, 255, 0.5);
 }
 
 ::-webkit-scrollbar-thumb {

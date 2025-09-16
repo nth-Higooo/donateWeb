@@ -5,7 +5,6 @@ import {
   Check,
   ExternalLink,
   Users,
-  Target,
   Gift,
   Star,
 } from "lucide-react";
@@ -14,22 +13,29 @@ const CosmicFundraisingWebsite = () => {
   const [donations, setDonations] = useState({
     total: 0,
     donors: [],
+    // Milestones
     milestones: [
       {
-        amount: 2000000,
-        title: "Cứu trợ khẩn cấp",
+        amount: 1500000,
+        title: "QÙA KHAI TRƯƠNG",
         image: "/api/placeholder/300/200",
         completed: false,
       },
       {
-        amount: 27000000,
-        title: "Xây dựng trường học",
+        amount: 18000000,
+        title: "BOOTH CHECKIN",
         image: "/api/placeholder/300/200",
         completed: false,
       },
       {
-        amount: 34000000,
-        title: "Thiết bị y tế",
+        amount: 6000000,
+        title: "LỀU & GIFT MINI GAME",
+        image: "/api/placeholder/300/200",
+        completed: false,
+      },
+      {
+        amount: null, // mốc cuối để ?????????
+        title: "SINH NHẬT",
         image: "/api/placeholder/300/200",
         completed: false,
       },
@@ -114,7 +120,8 @@ const CosmicFundraisingWebsite = () => {
   };
 
   const getProgressPercentage = () => {
-    const maxMilestone = Math.max(...donations.milestones.map((m) => m.amount));
+    const validMilestones = donations.milestones.filter((m) => m.amount);
+    const maxMilestone = Math.max(...validMilestones.map((m) => m.amount));
     return Math.min((donations.total / maxMilestone) * 100, 100);
   };
 
@@ -188,21 +195,22 @@ const CosmicFundraisingWebsite = () => {
       >
         {/* Website Title */}
         <div
-          className="text-center mb-16"
+          className="text-center mb-8"
           style={{ transform: `translateY(${scrollY * 0.1}px)` }}
         >
           <h1
-            className="text-3xl md:text-5xl font-bold mb-4 text-center
+            className="text-3xl md:text-5xl font-bold mb-2 text-center
              bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400
              bg-clip-text text-transparent animate-pulse"
             style={{
               fontFamily: '"Rowdies","Potta One", sans-serif',
               textShadow:
-                "0 0 6px rgba(255, 178, 220, 1), 0 0 16px rgba(171,71,188,0.6), 0 0 22px rgba(244,143,177,0.6)",
+                "0 0 6px rgba(252, 252, 252, 1), 0 0 16px rgba(230, 114, 195, 1), 0 0 22px rgba(244, 143, 177, 0)",
               lineHeight: "1.2",
               letterSpacing: "0.05em",
               animation:
                 "pulse 2s infinite ease-in-out, glow 3s infinite alternate",
+              fontSize: "2.5rem",
             }}
           >
             QUỸ VƯỜN MÍT <br /> FC MISTHY
@@ -210,7 +218,7 @@ const CosmicFundraisingWebsite = () => {
 
           <div className="flex justify-center items-center mt-6 space-x-2">
             <Star className="w-6 h-6 text-yellow-400 animate-spin" />
-            {/* <Star className="w-4 h-4 text-yellow-300 animate-pulse" /> */}
+            <Star className="w-5 h-5 text-yellow-300 animate-pulse" />
             <Star
               className="w-6 h-6 text-yellow-400 animate-spin"
               style={{ animationDelay: "1s" }}
@@ -220,27 +228,28 @@ const CosmicFundraisingWebsite = () => {
 
         {/* Donation Progress Card */}
         <div
-          className="bg-black/30 backdrop-blur-lg border border-purple-500/30 rounded-3xl p-8 mb-12 shadow-2xl glass"
+          className="bg-black/30 backdrop-blur-lg border border-purple-500/30 rounded-3xl p-5 mb-12 shadow-2xl glass"
           style={{ transform: `translateY(${scrollY * 0.05}px)` }}
         >
           <div className="text-center mb-8">
-            <h2
-              className="text-3xl font-bold text-cyan-400 mb-2"
+            <h1
+              className="font-bold text-[clamp(1.8rem,4vw,3.5rem)"
               style={{
                 fontFamily: '"Rowdies","Potta One", sans-serif',
                 textShadow: `
-      0 0 6px rgba(0, 255, 255, 0.9),   /* bright aqua glow */
+      0 0 6px rgba(113, 255, 255, 1),   /* bright aqua glow */
       0 0 12px rgba(0, 200, 255, 0.7),  /* deeper blue glow */
-      0 0 20px rgba(173, 216, 230, 0.6) /* soft light-blue halo */
+      0 0 20px rgba(230, 249, 255, 0.13) /* soft light-blue halo */
     `,
                 lineHeight: "1.2",
                 letterSpacing: "0.05em",
                 animation:
-                  "pulse 0.5s infinite ease-in-out, glow 3s infinite alternate",
+                  "pulse 0.8s infinite ease-in-out, glow 3s infinite alternate",
+                fontSize: "2.5rem",
               }}
             >
               SUPPER FEST PROJECT
-            </h2>
+            </h1>
 
             <p className="text-4xl font-bold text-white mb-4">
               {formatCurrency(donations.total)}
@@ -264,12 +273,12 @@ const CosmicFundraisingWebsite = () => {
               {getProgressPercentage().toFixed(1)}% progress
             </div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          {/* 
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {donations.milestones.map((milestone, index) => (
               <div
                 key={index}
-                className="text-center p-4 bg-gray-800/50 rounded-xl border border-gray-600/30"
+                className="flex flex-col items-center justify-center p-4 bg-gray-800/50 rounded-xl border border-gray-600/30 min-w-[120px]"
               >
                 <div
                   className={`text-sm font-semibold mb-2 ${
@@ -283,113 +292,111 @@ const CosmicFundraisingWebsite = () => {
                     milestone.completed ? "text-green-400" : "text-white"
                   }`}
                 >
-                  {formatCurrency(milestone.amount)}
+                  {milestone.amount
+                    ? formatCurrency(milestone.amount)
+                    : "????????"}
                 </div>
                 {milestone.completed && (
                   <Check className="w-6 h-6 text-green-400 mx-auto mt-2 animate-bounce" />
                 )}
               </div>
             ))}
-          </div>
-        </div>
+          </div> */}
 
-        {/* 3D Carousel Card */}
-        <div
-          className="bg-black/30 backdrop-blur-lg border border-purple-500/30 rounded-3xl p-8 mb-12 shadow-2xl glass"
-          style={{ transform: `translateY(${scrollY * 0.03}px)` }}
-        >
-          <h2 className="text-3xl font-bold text-center text-purple-400 mb-8">
-            🎯 Các Hoạt Động Mục Tiêu
-          </h2>
+          {/* 3D Carousel Card */}
+          <div
+            className="bg-black/30 backdrop-blur-lg border border-purple-500/30 rounded-3xl p-2 mb-2 shadow-2xl glass"
+            style={{ transform: `translateY(${scrollY * 0.03}px)` }}
+          >
+            <div className="relative h-96 overflow-hidden">
+              <div className="flex items-center justify-center h-full perspective-1000">
+                {donations.milestones.map((milestone, index) => {
+                  const isActive = index === currentSlide;
+                  const offset =
+                    (index - currentSlide + donations.milestones.length) %
+                    donations.milestones.length;
 
-          <div className="relative h-96 overflow-hidden">
-            <div className="flex items-center justify-center h-full perspective-1000">
-              {donations.milestones.map((milestone, index) => {
-                const isActive = index === currentSlide;
-                const offset =
-                  (index - currentSlide + donations.milestones.length) %
-                  donations.milestones.length;
-                const isNext =
-                  offset === 1 || offset === donations.milestones.length - 1;
+                  let position = offset;
+                  if (offset > donations.milestones.length / 2) {
+                    position = offset - donations.milestones.length;
+                  }
 
-                return (
-                  <div
-                    key={index}
-                    className={`absolute transition-all duration-700 ease-in-out transform-gpu ${
-                      isActive
-                        ? "translate-x-0 scale-100 z-20 opacity-100"
-                        : isNext
-                        ? "translate-x-64 scale-75 z-10 opacity-60"
-                        : "translate-x-32 scale-50 z-0 opacity-30"
-                    }`}
-                    style={{
-                      transform: `
-                        translateX(${(offset - 2) * 200}px) 
-                        scale(${isActive ? 1 : 0.7}) 
-                        rotateY(${(offset - 2) * 15}deg)
-                        translateZ(${isActive ? 0 : -100}px)
-                      `,
-                    }}
-                  >
-                    <div className="bg-gray-800/80 rounded-2xl p-6 w-80 h-80 flex flex-col items-center justify-center border border-gray-600/50 backdrop-blur-sm">
-                      <div className="w-48 h-32 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg mb-4 flex items-center justify-center relative overflow-hidden">
-                        <div className="absolute inset-0 bg-black/20" />
-                        <span className="text-white font-bold z-10">
-                          Hình ảnh
-                        </span>
-                        {milestone.completed && (
-                          <div className="absolute top-2 right-2">
-                            <Check className="w-8 h-8 text-green-400 bg-green-900/80 rounded-full p-1 animate-bounce" />
-                          </div>
-                        )}
-                      </div>
-                      <h3 className="text-xl font-bold text-white mb-2 text-center">
-                        {milestone.title}
-                      </h3>
-                      <p className="text-cyan-400 font-semibold">
-                        {formatCurrency(milestone.amount)}
-                      </p>
-                      <div
-                        className={`mt-2 px-3 py-1 rounded-full text-sm ${
-                          milestone.completed
-                            ? "bg-green-900/50 text-green-400 border border-green-500/50"
-                            : "bg-gray-700/50 text-gray-300 border border-gray-600/50"
-                        }`}
-                      >
-                        {milestone.completed
-                          ? "✅ Đã hoàn thành"
-                          : "⏳ Đang thực hiện"}
+                  return (
+                    <div
+                      key={index}
+                      className="absolute transition-all duration-700 ease-in-out transform-gpu"
+                      style={{
+                        left: "30%", // luôn lấy trung tâm làm gốc
+                        transform: `
+          translateX(${position * 320}px)   /* mỗi slide lệch 260px từ center */
+          scale(${isActive ? 1 : 0.85})
+          rotateY(${position * 5}deg)
+          translateZ(${isActive ? 0 : -60}px)
+        `,
+                        zIndex: isActive ? 20 : 10 - Math.abs(position),
+                        opacity: isActive ? 1 : 0.6,
+                      }}
+                    >
+                      <div className="bg-gray-800/80 rounded-2xl p-6 w-80 h-80 flex flex-col items-center justify-center border border-gray-600/50 backdrop-blur-sm">
+                        <div className="w-40 h-28 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg mb-4 flex items-center justify-center relative overflow-hidden">
+                          <div className="absolute inset-0 bg-black/20" />
+                          <span className="text-white font-bold z-10">
+                            Hình ảnh
+                          </span>
+                          {milestone.completed && (
+                            <div className="absolute top-2 right-2">
+                              <Check className="w-6 h-6 text-green-400 bg-green-900/80 rounded-full p-1 animate-bounce" />
+                            </div>
+                          )}
+                        </div>
+                        <h3 className="text-lg font-bold text-white mb-2 text-center">
+                          {milestone.title}
+                        </h3>
+                        <p className="text-cyan-400 font-semibold">
+                          {formatCurrency(milestone.amount)}
+                        </p>
+                        <div
+                          className={`mt-2 px-3 py-1 rounded-full text-sm ${
+                            milestone.completed
+                              ? "bg-green-900/50 text-green-400 border border-green-500/50"
+                              : "bg-gray-700/50 text-gray-300 border border-gray-600/50"
+                          }`}
+                        >
+                          {milestone.completed
+                            ? "✅ Đã hoàn thành"
+                            : "⏳ Đang thực hiện"}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+
+              <button
+                onClick={prevSlide}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-purple-600/80 hover:bg-purple-500 rounded-full p-3 transition-colors z-30 backdrop-blur-sm border border-purple-400/50"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={nextSlide}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-purple-600/80 hover:bg-purple-500 rounded-full p-3 transition-colors z-30 backdrop-blur-sm border border-purple-400/50"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
             </div>
 
-            <button
-              onClick={prevSlide}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-purple-600/80 hover:bg-purple-500 rounded-full p-3 transition-colors z-30 backdrop-blur-sm border border-purple-400/50"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-            <button
-              onClick={nextSlide}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-purple-600/80 hover:bg-purple-500 rounded-full p-3 transition-colors z-30 backdrop-blur-sm border border-purple-400/50"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
-          </div>
-
-          <div className="flex justify-center mt-6 space-x-2">
-            {donations.milestones.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`w-3 h-3 rounded-full transition-colors ${
-                  currentSlide === index ? "bg-purple-400" : "bg-gray-600"
-                }`}
-              />
-            ))}
+            <div className="flex justify-center mt-6 space-x-2">
+              {donations.milestones.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`w-3 h-3 rounded-full transition-colors ${
+                    currentSlide === index ? "bg-purple-400" : "bg-gray-600"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
@@ -399,9 +406,9 @@ const CosmicFundraisingWebsite = () => {
           style={{ transform: `translateY(${scrollY * 0.02}px)` }}
         >
           <div className="text-center mb-8">
-            <Users className="w-12 h-12 text-yellow-400 mx-auto mb-4 animate-pulse" />
+            <Users className="w-8 h-8 text-yellow-400 mx-auto mb-4 animate-pulse" />
             <h2 className="text-3xl font-bold text-yellow-400">
-              🏆 Top 10 Nhà Hảo Tâm
+              🏆 TOP 10 DONNORS 🏆
             </h2>
           </div>
 
