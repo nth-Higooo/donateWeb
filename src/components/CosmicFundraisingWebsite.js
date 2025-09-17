@@ -98,21 +98,15 @@ const CosmicFundraisingWebsite = () => {
   useEffect(() => {
     const fetchDataFromGoogleSheets = async () => {
       try {
-        console.log("🔄 Fetching data from Google Sheets...");
-
         // ✅ wrap sheet name in quotes + add range
         const range = `'${SHEET_NAME}'!A1:Z1000`;
         const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(
           range
         )}?key=${API_KEY}`;
 
-        console.log("📡 Request URL:", url);
-
         const response = await fetch(url);
-        console.log("📥 Response status:", response.status);
 
         const data = await response.json();
-        console.log("📊 Raw data from Sheets:", data);
 
         if (!data.values) {
           console.warn("⚠️ No values found in sheet");
@@ -120,22 +114,18 @@ const CosmicFundraisingWebsite = () => {
         }
 
         const rows = data.values;
-        console.log("📝 Parsed rows:", rows);
 
         // 1. Tổng tiền
         const totalRow = rows.find((r) => r.includes("TOTAL"));
-        console.log("💰 Found TOTAL row:", totalRow);
 
         let total = 0;
         if (totalRow) {
           const totalStr = totalRow[3] || "0"; // ✅ always column 3
           total = parseInt(totalStr.replace(/[^\d]/g, "")) || 0;
         }
-        console.log("💵 Parsed total:", total);
 
         // 2. Donors list
         const donorRows = rows.slice(4);
-        console.log("👥 Donor rows:", donorRows);
 
         const donors = donorRows
           .map((r) => {
@@ -146,25 +136,21 @@ const CosmicFundraisingWebsite = () => {
           })
           .filter(Boolean)
           .slice(0, 10);
-        console.log("🏆 Parsed donors:", donors);
 
         // 3. HOA SEN Fund
         const hoaSenRow = rows.find((r) => r.includes("HOA SEN"));
-        console.log("🌸 HOA SEN row:", hoaSenRow);
 
         let hoaSenFund = 0;
         if (hoaSenRow) {
           const fundStr = hoaSenRow[2] || "0"; // ✅ always column 2
           hoaSenFund = parseInt(fundStr.replace(/[^\d]/g, "")) || 0;
         }
-        console.log("🌸 Parsed HOA SEN fund:", hoaSenFund);
 
         // 4. Milestones
         const updatedMilestones = donations.milestones.map((m) => ({
           ...m,
           completed: false,
         }));
-        console.log("🎯 Updated milestones:", updatedMilestones);
 
         setDonations({
           total,
@@ -172,7 +158,6 @@ const CosmicFundraisingWebsite = () => {
           milestones: updatedMilestones,
           hoaSenFund,
         });
-        console.log("✅ Donations state updated!");
       } catch (error) {
         console.error("❌ Error fetching data from Google Sheets:", error);
       }
