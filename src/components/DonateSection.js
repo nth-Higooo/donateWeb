@@ -3,7 +3,7 @@ import { Box, Card, Typography, Grid } from "@mui/material";
 
 export default function DonationSection() {
   return (
-    <Box sx={{ py: 6, px: 0 }} className="container mx-auto px-4">
+    <Box sx={{ py: 6 }} className="flex justify-center px-4">
       <Card
         sx={{
           p: { xs: 3, sm: 5 },
@@ -11,6 +11,8 @@ export default function DonationSection() {
           backgroundColor: "rgba(0,0,0,0.6)",
           border: "1px solid rgba(236,72,153,0.3)",
           boxShadow: "0 8px 25px rgba(0,0,0,0.5)",
+          width: "100%",
+          maxWidth: "900px", // ✅ keep card centered and not too wide
         }}
       >
         <Typography
@@ -18,7 +20,7 @@ export default function DonationSection() {
           align="center"
           sx={{
             mb: 6,
-            fontSize: { xs: "20px", sm: "28px" },
+            fontSize: { xs: "16px", sm: "25px" },
             fontFamily: "Goldman, serif",
             color: "rgba(255, 255, 255, 0.9)",
             WebkitTextStroke: "1px #fff",
@@ -51,7 +53,7 @@ export default function DonationSection() {
                     mb: 1,
                   }}
                 >
-                  SUPPER FEST
+                  SUPPERFEST
                 </Typography>
                 <Typography
                   sx={{

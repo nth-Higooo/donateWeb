@@ -98,7 +98,6 @@ const CosmicFundraisingWebsite = () => {
   useEffect(() => {
     const fetchDataFromGoogleSheets = async () => {
       try {
-        // ✅ wrap sheet name in quotes + add range
         const range = `'${SHEET_NAME}'!A1:Z1000`;
         const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(
           range
@@ -269,9 +268,7 @@ const CosmicFundraisingWebsite = () => {
           style={{ transform: `translateY(${scrollY * 0.1}px)` }}
         >
           <h1
-            className="text-3xl md:text-5xl font-bold mb-2 text-center
-             bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400
-             bg-clip-text text-transparent animate-pulse"
+            className="text-center font-bold mb-2 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-pulse"
             style={{
               fontFamily: '"Rowdies","Potta One", sans-serif',
               textShadow:
@@ -280,7 +277,7 @@ const CosmicFundraisingWebsite = () => {
               letterSpacing: "0.05em",
               animation:
                 "pulse 2s infinite ease-in-out, glow 3s infinite alternate",
-              fontSize: "3rem",
+              fontSize: "clamp(1.8rem, 4vw, 3rem)", // ✅ responsive
             }}
           >
             QUỸ VƯỜN MÍT <br /> FC MISTHY
@@ -303,27 +300,30 @@ const CosmicFundraisingWebsite = () => {
         >
           <div className="text-center mb-8">
             <h1
-              className="font-bold text-[clamp(1.8rem,4vw,3.5rem)"
+              className="font-bold text-center"
               style={{
                 fontFamily: '"Rowdies","Potta One", sans-serif',
                 textShadow: `
-      0 0 6px rgba(113, 255, 255, 1),   /* bright aqua glow */
-      0 0 12px rgba(0, 200, 255, 0.7),  /* deeper blue glow */
-      0 0 20px rgba(230, 249, 255, 0.13) /* soft light-blue halo */
+      0 0 6px rgba(113, 255, 255, 1),
+      0 0 12px rgba(0, 200, 255, 0.7),
+      0 0 20px rgba(230, 249, 255, 0.13)
     `,
                 lineHeight: "1.2",
                 letterSpacing: "0.05em",
                 animation:
                   "pulse 0.8s infinite ease-in-out, glow 3s infinite alternate",
-                fontSize: "2.5rem",
+                fontSize: "clamp(1.5rem, 3vw, 2.5rem)", // ✅ responsive
               }}
             >
               SUPPERFEST PROJECT
             </h1>
 
             <p
-              className="text-4xl font-bold text-white mb-4 mt-4"
-              style={{ fontFamily: "Goldman" }}
+              className="font-bold text-white mb-4 mt-4 text-center"
+              style={{
+                fontFamily: "Goldman",
+                fontSize: "clamp(1.5rem, 4vw, 2.5rem)", // ✅ responsive số tiền
+              }}
             >
               {formatCurrency(donations.total)}
             </p>
@@ -356,12 +356,15 @@ const CosmicFundraisingWebsite = () => {
             </div>
           </div>
           {/* 
-          {/* 3D Carousel Card */}
+{/* 3D Carousel Card */}
           <div
             className="bg-black/50 backdrop-blur-lg border border-purple-500/30 rounded-3xl mb-1 shadow-2xl glass"
             style={{ transform: `translateY(${scrollY * 0.03}px)` }}
           >
-            <div className="relative h-80 overflow-hidden">
+            <div
+              className="relative overflow-hidden"
+              style={{ height: "clamp(250px, 60vw, 400px)" }}
+            >
               <div className="flex items-center justify-center h-full perspective-1000">
                 {donations.milestones.map((milestone, index) => {
                   const imageSrc =
@@ -381,19 +384,32 @@ const CosmicFundraisingWebsite = () => {
                       key={index}
                       className="absolute transition-all duration-700 ease-in-out transform-gpu"
                       style={{
-                        left: "30%",
+                        left: "5%",
                         transform: `
-          translateX(${position * 450}px)   /* mỗi slide lệch 260px từ center */
-          scale(${isActive ? 1 : 0.75})
-          rotateY(${position * 5}deg)
-          translateZ(${isActive ? 0 : -60}px)
-        `,
+                translateX(${position * 450}px)
+                scale(${isActive ? 1 : 0.75})
+                rotateY(${position * 5}deg)
+                translateZ(${isActive ? 0 : -60}px)
+              `,
                         zIndex: isActive ? 20 : 10 - Math.abs(position),
                         opacity: isActive ? 1 : 0.5,
                       }}
                     >
-                      <div className="bg-gray-800/80 rounded-2xl p-2 w-[400px] h-[320px] flex flex-col items-center justify-center border border-gray-600/50 backdrop-blur-sm">
-                        <div className="w-[380px] h-[250px] rounded-lg mb-4 flex items-center justify-center relative overflow-hidden border border-gray-500/40">
+                      <div
+                        className="bg-gray-800/80 rounded-2xl p-2 flex flex-col items-center justify-center border border-gray-600/50 backdrop-blur-sm"
+                        style={{
+                          width: "clamp(240px, 70vw, 400px)",
+                          height: "clamp(200px, 55vw, 320px)",
+                        }}
+                      >
+                        {/* Image Box */}
+                        <div
+                          className="rounded-lg mb-4 flex items-center justify-center relative overflow-hidden border border-gray-500/40"
+                          style={{
+                            width: "clamp(200px, 65vw, 380px)",
+                            height: "clamp(140px, 45vw, 250px)",
+                          }}
+                        >
                           <div className="absolute inset-0 bg-black/20" />
                           {milestone.image ? (
                             <img
@@ -403,7 +419,12 @@ const CosmicFundraisingWebsite = () => {
                             />
                           ) : (
                             <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                              <span className="text-white font-bold z-10">
+                              <span
+                                className="text-white font-bold z-10"
+                                style={{
+                                  fontSize: "clamp(0.8rem, 2vw, 1.2rem)",
+                                }}
+                              >
                                 Hình ảnh
                               </span>
                             </div>
@@ -411,16 +432,29 @@ const CosmicFundraisingWebsite = () => {
 
                           {milestone.completed && (
                             <div className="absolute top-2 right-2">
-                              <Check className="w-6 h-6 text-green-400 bg-green-900/80 rounded-full p-1 animate-bounce" />
+                              <Check
+                                className="text-green-400 bg-green-900/80 rounded-full p-1 animate-bounce"
+                                style={{
+                                  width: "clamp(18px, 4vw, 24px)",
+                                  height: "clamp(18px, 4vw, 24px)",
+                                }}
+                              />
                             </div>
                           )}
                         </div>
+
+                        {/* Title */}
                         <h3
-                          className="text-lg font-bold text-white mb-1 text-center"
-                          style={{ fontFamily: "Goldman", fontSize: "1.2em" }}
+                          className="font-bold text-white mb-1 text-center"
+                          style={{
+                            fontFamily: "Goldman",
+                            fontSize: "clamp(1rem, 2.5vw, 1.5rem)",
+                          }}
                         >
                           {milestone.title}
                         </h3>
+
+                        {/* Amount */}
                         <p
                           className={
                             milestone.amount
@@ -429,21 +463,27 @@ const CosmicFundraisingWebsite = () => {
                           }
                           style={{
                             fontFamily: "Goldman",
-
-                            fontSize: milestone.amount ? "1em" : "1.5em",
+                            fontSize: milestone.amount
+                              ? "clamp(0.9rem, 2vw, 1.2rem)"
+                              : "clamp(1.2rem, 3vw, 1.6rem)",
                           }}
                         >
                           {milestone.amount
                             ? formatCurrency(milestone.amount)
                             : "???????"}
                         </p>
+
+                        {/* Status */}
                         <div
-                          className={`mt-2 px-3 py-1 rounded-full text-sm ${
+                          className={`mt-2 px-3 py-1 rounded-full ${
                             milestone.completed
                               ? "bg-green-900/50 text-green-400 border border-green-500/50"
                               : "bg-gray-700/50 text-gray-300 border border-gray-600/50"
                           }`}
-                          style={{ fontFamily: "Goldman" }}
+                          style={{
+                            fontFamily: "Goldman",
+                            fontSize: "clamp(0.7rem, 1.5vw, 1rem)",
+                          }}
                         >
                           {milestone.completed
                             ? "✅ Completed ✅"
@@ -455,28 +495,46 @@ const CosmicFundraisingWebsite = () => {
                 })}
               </div>
 
+              {/* Prev Button */}
               <button
                 onClick={prevSlide}
                 className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-purple-600/80 hover:bg-purple-500 rounded-full p-3 transition-colors z-30 backdrop-blur-sm border border-purple-400/50"
               >
-                <ChevronLeft className="w-6 h-6" />
+                <ChevronLeft
+                  style={{
+                    width: "clamp(20px, 5vw, 28px)",
+                    height: "clamp(20px, 5vw, 28px)",
+                  }}
+                />
               </button>
+
+              {/* Next Button */}
               <button
                 onClick={nextSlide}
                 className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-purple-600/80 hover:bg-purple-500 rounded-full p-3 transition-colors z-30 backdrop-blur-sm border border-purple-400/50"
               >
-                <ChevronRight className="w-6 h-6" />
+                <ChevronRight
+                  style={{
+                    width: "clamp(20px, 5vw, 28px)",
+                    height: "clamp(20px, 5vw, 28px)",
+                  }}
+                />
               </button>
             </div>
 
+            {/* Indicator Dots */}
             <div className="flex justify-center mt-6 space-x-2">
               {donations.milestones.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
+                  className={`rounded-full transition-colors ${
                     currentSlide === index ? "bg-purple-400" : "bg-gray-600"
                   }`}
+                  style={{
+                    width: "clamp(8px, 2vw, 12px)",
+                    height: "clamp(8px, 2vw, 12px)",
+                  }}
                 />
               ))}
             </div>
@@ -488,12 +546,22 @@ const CosmicFundraisingWebsite = () => {
           style={{ transform: `translateY(${scrollY * 0.04}px)` }}
         >
           <h2
-            className="text-3xl font-bold mb-4 text-pink-400"
-            style={{ fontFamily: '"Rowdies","Potta One", sans-serif' }}
+            className="font-bold mb-4 text-pink-400"
+            style={{
+              fontFamily: '"Rowdies","Potta One", sans-serif',
+              fontSize: "clamp(1.2rem, 3vw, 2.5rem)", // ✅ responsive title
+            }}
           >
-            QUỸ TÔN HOA SEN
+            QUỸ MÁI ẤM GIA ĐÌNH VIỆT
           </h2>
-          <div className="text-5xl font-extrabold text-yellow-400 drop-shadow-lg">
+
+          <div
+            className="font-extrabold text-yellow-400 drop-shadow-lg"
+            style={{
+              fontSize: "clamp(2rem, 5vw, 3.5rem)", // ✅ responsive số tiền
+              fontFamily: "Goldman",
+            }}
+          >
             <CountUp
               end={donations.hoaSenFund}
               duration={5}
@@ -509,14 +577,24 @@ const CosmicFundraisingWebsite = () => {
           style={{ transform: `translateY(${scrollY * 0.02}px)` }}
         >
           <div className="text-center mb-8">
-            <Users className="w-8 h-8 text-yellow-400 mx-auto mb-4 animate-pulse" />
+            <Users
+              className="mx-auto mb-4 animate-pulse text-yellow-400"
+              style={{
+                width: "clamp(24px, 6vw, 32px)",
+                height: "clamp(24px, 6vw, 32px)",
+              }}
+            />
             <h2
-              className="text-3xl font-bold mb-4 text-yellow-400"
-              style={{ fontFamily: '"Rowdies","Potta One", sans-serif' }}
+              className="font-bold mb-4 text-yellow-400"
+              style={{
+                fontFamily: '"Rowdies","Potta One", sans-serif',
+                fontSize: "clamp(1.2rem, 3vw, 2.5rem)", // ✅ responsive title
+              }}
             >
-              🏆 TOP 10 DONNORS 🏆
+              🏆 TOP 10 DONORS 🏆
             </h2>
           </div>
+
           {donations.donors ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
               {donations.donors.map((donor, index) => (
@@ -532,17 +610,11 @@ const CosmicFundraisingWebsite = () => {
                       : "bg-gray-800/50 border-gray-600/30"
                   }`}
                 >
+                  {/* Rank icon */}
                   <div className="flex items-center">
                     <span
-                      className={`text-2xl mr-3 ${
-                        index === 0
-                          ? "🥇"
-                          : index === 1
-                          ? "🥈"
-                          : index === 2
-                          ? "🥉"
-                          : "💎"
-                      }`}
+                      className="mr-3"
+                      style={{ fontSize: "clamp(1.25rem, 3vw, 2rem)" }} // ✅ responsive icon size
                     >
                       {index === 0
                         ? "🥇"
@@ -555,16 +627,24 @@ const CosmicFundraisingWebsite = () => {
                     <div>
                       <div
                         className="font-semibold text-white"
-                        style={{ fontFamily: "Goldman" }}
+                        style={{
+                          fontFamily: "Goldman",
+                          fontSize: "clamp(0.9rem, 2.5vw, 1.2rem)", // ✅ responsive donor name
+                        }}
                       >
                         {donor.name}
                       </div>
                     </div>
                   </div>
+
+                  {/* Amount */}
                   <div
                     className={`font-bold ${
                       index < 3 ? "text-yellow-400" : "text-cyan-400"
                     }`}
+                    style={{
+                      fontSize: "clamp(0.9rem, 2.5vw, 1.2rem)", // ✅ responsive amount
+                    }}
                   >
                     {formatCurrency(donor.amount)}
                   </div>
@@ -575,6 +655,7 @@ const CosmicFundraisingWebsite = () => {
             <p>Chưa có thông tin</p>
           )}
 
+          {/* Button */}
           <div className="text-center">
             <button
               onClick={() =>
@@ -584,13 +665,18 @@ const CosmicFundraisingWebsite = () => {
                   "noopener,noreferrer"
                 )
               }
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-8 py-3 rounded-full font-semibold transition-all transform hover:scale-105 flex items-center mx-auto"
-              style={{ fontFamily: "Goldman" }}
+              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 rounded-full font-semibold transition-all transform hover:scale-105 flex items-center mx-auto"
+              style={{
+                fontFamily: "Goldman",
+                padding: "clamp(0.5rem, 2vw, 0.75rem) clamp(1.5rem, 5vw, 2rem)", // ✅ responsive padding
+                fontSize: "clamp(0.9rem, 2.5vw, 1.1rem)", // ✅ responsive text
+              }}
             >
               Full List Donors
             </button>
           </div>
         </div>
+
         <DonationSection />
 
         {/* Footer */}
