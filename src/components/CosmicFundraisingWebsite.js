@@ -1,13 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from "react";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Check,
-  ExternalLink,
-  Users,
-  Gift,
-  Star,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Check, Users, Star } from "lucide-react";
 import CountUp from "react-countup";
 import DonationSection from "./DonateSection";
 
@@ -18,19 +11,19 @@ const CosmicFundraisingWebsite = () => {
     // Milestones
     milestones: [
       {
-        amount: 1500000,
-        title: "QÙA KHAI TRƯƠNG",
+        amount: 2000000,
+        title: "QUÀ KHAI TRƯƠNG",
         image: "/api/placeholder/300/200",
         completed: false,
       },
       {
-        amount: 18000000,
+        amount: 19000000,
         title: "BOOTH CHECKIN",
         image: "/api/placeholder/300/200",
         completed: false,
       },
       {
-        amount: 6000000,
+        amount: 7000000,
         title: "LỀU & GIFT MINI GAME",
         image: "/api/placeholder/300/200",
         completed: false,
@@ -80,7 +73,6 @@ const CosmicFundraisingWebsite = () => {
 
         const updatedMilestones = donations.milestones.map((milestone) => ({
           ...milestone,
-          completed: mockData.total >= milestone.amount,
         }));
 
         setDonations({
@@ -95,6 +87,98 @@ const CosmicFundraisingWebsite = () => {
     fetchDataFromGoogleSheets();
 
     // Set up periodic refresh every 5 minutes
+    const interval = setInterval(fetchDataFromGoogleSheets, 5 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+  // đặt dưới cùng file hoặc trong 1 file config riêng
+  const API_KEY = "AIzaSyADK7u-ptZPZZSpRnS-RQk1vgcIRRgd46w";
+  const SPREADSHEET_ID = "108os02dE_gkQXClS9YOnAF84GPsg4S-FEyxD4O3urYI";
+  const SHEET_NAME = "Sheet1";
+
+  useEffect(() => {
+    const fetchDataFromGoogleSheets = async () => {
+      try {
+        console.log("🔄 Fetching data from Google Sheets...");
+
+        // ✅ wrap sheet name in quotes + add range
+        const range = `'${SHEET_NAME}'!A1:Z1000`;
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(
+          range
+        )}?key=${API_KEY}`;
+
+        console.log("📡 Request URL:", url);
+
+        const response = await fetch(url);
+        console.log("📥 Response status:", response.status);
+
+        const data = await response.json();
+        console.log("📊 Raw data from Sheets:", data);
+
+        if (!data.values) {
+          console.warn("⚠️ No values found in sheet");
+          return;
+        }
+
+        const rows = data.values;
+        console.log("📝 Parsed rows:", rows);
+
+        // 1. Tổng tiền
+        const totalRow = rows.find((r) => r.includes("TOTAL"));
+        console.log("💰 Found TOTAL row:", totalRow);
+
+        let total = 0;
+        if (totalRow) {
+          const totalStr = totalRow[3] || "0"; // ✅ always column 3
+          total = parseInt(totalStr.replace(/[^\d]/g, "")) || 0;
+        }
+        console.log("💵 Parsed total:", total);
+
+        // 2. Donors list
+        const donorRows = rows.slice(4);
+        console.log("👥 Donor rows:", donorRows);
+
+        const donors = donorRows
+          .map((r) => {
+            const name = r[1] || "";
+            const amountStr = r[3] || "0";
+            const amount = parseInt(amountStr.replace(/[^\d]/g, "")) || 0;
+            return name && amount > 0 ? { name, amount } : null;
+          })
+          .filter(Boolean)
+          .slice(0, 10);
+        console.log("🏆 Parsed donors:", donors);
+
+        // 3. HOA SEN Fund
+        const hoaSenRow = rows.find((r) => r.includes("HOA SEN"));
+        console.log("🌸 HOA SEN row:", hoaSenRow);
+
+        let hoaSenFund = 0;
+        if (hoaSenRow) {
+          const fundStr = hoaSenRow[2] || "0"; // ✅ always column 2
+          hoaSenFund = parseInt(fundStr.replace(/[^\d]/g, "")) || 0;
+        }
+        console.log("🌸 Parsed HOA SEN fund:", hoaSenFund);
+
+        // 4. Milestones
+        const updatedMilestones = donations.milestones.map((m) => ({
+          ...m,
+          completed: false,
+        }));
+        console.log("🎯 Updated milestones:", updatedMilestones);
+
+        setDonations({
+          total,
+          donors,
+          milestones: updatedMilestones,
+          hoaSenFund,
+        });
+        console.log("✅ Donations state updated!");
+      } catch (error) {
+        console.error("❌ Error fetching data from Google Sheets:", error);
+      }
+    };
+
+    fetchDataFromGoogleSheets();
     const interval = setInterval(fetchDataFromGoogleSheets, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
@@ -115,15 +199,14 @@ const CosmicFundraisingWebsite = () => {
   }, [donations.milestones.length]);
 
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(amount);
+    if (amount == null) return "0 VND";
+    return amount.toLocaleString("en-US") + " VND";
   };
 
   const getProgressPercentage = () => {
-    const validMilestones = donations.milestones.filter((m) => m.amount);
-    const maxMilestone = Math.max(...validMilestones.map((m) => m.amount));
+    // const validMilestones = donations.milestones.filter((m) => m.amount);
+    // const maxMilestone = Math.max(...validMilestones.map((m) => m.amount));
+    const maxMilestone = 28000000;
     return Math.min((donations.total / maxMilestone) * 100, 100);
   };
 
@@ -137,12 +220,12 @@ const CosmicFundraisingWebsite = () => {
         (prev - 1 + donations.milestones.length) % donations.milestones.length
     );
   };
-
-  const handleViewFullDonorList = () => {
-    // Redirect to full donor list page
-    window.location.href = "/full-donor-list"; // Replace with your actual route
-  };
-
+  const milestoneImages = [
+    "/option2/1.png",
+    "/option2/2.png",
+    "/option2/3.png",
+    "/option2/4.png",
+  ];
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-purple-900 to-indigo-900 text-white overflow-hidden relative">
       {/* Animated Stars Background */}
@@ -207,12 +290,12 @@ const CosmicFundraisingWebsite = () => {
             style={{
               fontFamily: '"Rowdies","Potta One", sans-serif',
               textShadow:
-                "0 0 6px rgba(252, 252, 252, 1), 0 0 16px rgba(230, 114, 195, 1), 0 0 22px rgba(244, 143, 177, 0)",
+                "0 0 6px rgba(252, 252, 252, 1), 0 0 16px rgba(255, 105, 210, 0.7), 0 0 22px rgba(148, 70, 96, 0.44)",
               lineHeight: "1.2",
               letterSpacing: "0.05em",
               animation:
                 "pulse 2s infinite ease-in-out, glow 3s infinite alternate",
-              fontSize: "2.5rem",
+              fontSize: "3rem",
             }}
           >
             QUỸ VƯỜN MÍT <br /> FC MISTHY
@@ -250,69 +333,54 @@ const CosmicFundraisingWebsite = () => {
                 fontSize: "2.5rem",
               }}
             >
-              SUPPER FEST PROJECT
+              SUPPERFEST PROJECT
             </h1>
 
-            <p className="text-4xl font-bold text-white mb-4">
+            <p
+              className="text-4xl font-bold text-white mb-4 mt-4"
+              style={{ fontFamily: "Goldman" }}
+            >
               {formatCurrency(donations.total)}
             </p>
           </div>
 
           <div className="relative mb-6">
-            <div className="w-full bg-gray-700 rounded-full h-6 mb-4 overflow-hidden">
+            <div className="w-full bg-gray-700 rounded-full h-6 mb-2 overflow-hidden">
               <div
                 className="bg-gradient-to-r from-cyan-400 to-purple-500 h-full rounded-full transition-all duration-1000 ease-out relative overflow-hidden"
-                style={{ width: `${getProgressPercentage()}%` }}
+                style={{
+                  width: `${getProgressPercentage()}%`,
+                  fontFamily: "Goldman",
+                }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" />
                 <div
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"
-                  style={{ animationDelay: "1s" }}
+                  style={{ animationDelay: "1s", fontFamily: "Goldman" }}
                 />
               </div>
             </div>
-            <div className="text-center text-sm text-gray-300">
+            <div
+              className="text-center text-sm text-gray-300"
+              style={{
+                fontFamily: "Goldman",
+                fontSize: "1.2em",
+              }}
+            >
               {getProgressPercentage().toFixed(1)}% progress
             </div>
           </div>
           {/* 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {donations.milestones.map((milestone, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center justify-center p-4 bg-gray-800/50 rounded-xl border border-gray-600/30 min-w-[120px]"
-              >
-                <div
-                  className={`text-sm font-semibold mb-2 ${
-                    milestone.completed ? "text-green-400" : "text-gray-300"
-                  }`}
-                >
-                  {milestone.title}
-                </div>
-                <div
-                  className={`text-lg font-bold ${
-                    milestone.completed ? "text-green-400" : "text-white"
-                  }`}
-                >
-                  {milestone.amount
-                    ? formatCurrency(milestone.amount)
-                    : "????????"}
-                </div>
-                {milestone.completed && (
-                  <Check className="w-6 h-6 text-green-400 mx-auto mt-2 animate-bounce" />
-                )}
-              </div>
-            ))}
-          </div> */}
-
           {/* 3D Carousel Card */}
           <div
-            className="bg-black/30 backdrop-blur-lg border border-purple-500/30 rounded-3xl p-2 mb-2 shadow-2xl glass"
+            className="bg-black/50 backdrop-blur-lg border border-purple-500/30 rounded-3xl mb-1 shadow-2xl glass"
             style={{ transform: `translateY(${scrollY * 0.03}px)` }}
           >
-            <div className="relative h-96 overflow-hidden">
+            <div className="relative h-80 overflow-hidden">
               <div className="flex items-center justify-center h-full perspective-1000">
                 {donations.milestones.map((milestone, index) => {
+                  const imageSrc =
+                    milestoneImages[index] || "/option2/default.png";
                   const isActive = index === currentSlide;
                   const offset =
                     (index - currentSlide + donations.milestones.length) %
@@ -328,34 +396,61 @@ const CosmicFundraisingWebsite = () => {
                       key={index}
                       className="absolute transition-all duration-700 ease-in-out transform-gpu"
                       style={{
-                        left: "30%", // luôn lấy trung tâm làm gốc
+                        left: "30%",
                         transform: `
-          translateX(${position * 320}px)   /* mỗi slide lệch 260px từ center */
-          scale(${isActive ? 1 : 0.85})
+          translateX(${position * 450}px)   /* mỗi slide lệch 260px từ center */
+          scale(${isActive ? 1 : 0.75})
           rotateY(${position * 5}deg)
           translateZ(${isActive ? 0 : -60}px)
         `,
                         zIndex: isActive ? 20 : 10 - Math.abs(position),
-                        opacity: isActive ? 1 : 0.6,
+                        opacity: isActive ? 1 : 0.5,
                       }}
                     >
-                      <div className="bg-gray-800/80 rounded-2xl p-6 w-80 h-80 flex flex-col items-center justify-center border border-gray-600/50 backdrop-blur-sm">
-                        <div className="w-40 h-28 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg mb-4 flex items-center justify-center relative overflow-hidden">
+                      <div className="bg-gray-800/80 rounded-2xl p-2 w-[400px] h-[320px] flex flex-col items-center justify-center border border-gray-600/50 backdrop-blur-sm">
+                        <div className="w-[380px] h-[250px] rounded-lg mb-4 flex items-center justify-center relative overflow-hidden border border-gray-500/40">
                           <div className="absolute inset-0 bg-black/20" />
-                          <span className="text-white font-bold z-10">
-                            Hình ảnh
-                          </span>
+                          {milestone.image ? (
+                            <img
+                              src={imageSrc}
+                              alt={milestone.title}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                              <span className="text-white font-bold z-10">
+                                Hình ảnh
+                              </span>
+                            </div>
+                          )}
+
                           {milestone.completed && (
                             <div className="absolute top-2 right-2">
                               <Check className="w-6 h-6 text-green-400 bg-green-900/80 rounded-full p-1 animate-bounce" />
                             </div>
                           )}
                         </div>
-                        <h3 className="text-lg font-bold text-white mb-2 text-center">
+                        <h3
+                          className="text-lg font-bold text-white mb-1 text-center"
+                          style={{ fontFamily: "Goldman", fontSize: "1.2em" }}
+                        >
                           {milestone.title}
                         </h3>
-                        <p className="text-cyan-400 font-semibold">
-                          {formatCurrency(milestone.amount)}
+                        <p
+                          className={
+                            milestone.amount
+                              ? "text-cyan-400 font-semibold"
+                              : "text-red-400 font-bold"
+                          }
+                          style={{
+                            fontFamily: "Goldman",
+
+                            fontSize: milestone.amount ? "1em" : "1.5em",
+                          }}
+                        >
+                          {milestone.amount
+                            ? formatCurrency(milestone.amount)
+                            : "???????"}
                         </p>
                         <div
                           className={`mt-2 px-3 py-1 rounded-full text-sm ${
@@ -363,10 +458,11 @@ const CosmicFundraisingWebsite = () => {
                               ? "bg-green-900/50 text-green-400 border border-green-500/50"
                               : "bg-gray-700/50 text-gray-300 border border-gray-600/50"
                           }`}
+                          style={{ fontFamily: "Goldman" }}
                         >
                           {milestone.completed
-                            ? "✅ Đã hoàn thành"
-                            : "⏳ Đang thực hiện"}
+                            ? "✅ Completed ✅"
+                            : "⏳Pending⏳"}
                         </div>
                       </div>
                     </div>
@@ -413,7 +509,12 @@ const CosmicFundraisingWebsite = () => {
             QUỸ TÔN HOA SEN
           </h2>
           <div className="text-5xl font-extrabold text-yellow-400 drop-shadow-lg">
-            <CountUp end={50000000} duration={5} separator="," suffix=" VND" />
+            <CountUp
+              end={donations.hoaSenFund}
+              duration={5}
+              separator=","
+              suffix=" VND"
+            />
           </div>
         </div>
 
@@ -431,65 +532,77 @@ const CosmicFundraisingWebsite = () => {
               🏆 TOP 10 DONNORS 🏆
             </h2>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            {donations.donors.map((donor, index) => (
-              <div
-                key={index}
-                className={`flex items-center justify-between p-4 rounded-xl border transition-all hover:scale-105 ${
-                  index === 0
-                    ? "bg-gradient-to-r from-yellow-900/50 to-yellow-800/50 border-yellow-500/50"
-                    : index === 1
-                    ? "bg-gradient-to-r from-gray-700/50 to-gray-600/50 border-gray-400/50"
-                    : index === 2
-                    ? "bg-gradient-to-r from-amber-900/50 to-amber-800/50 border-amber-500/50"
-                    : "bg-gray-800/50 border-gray-600/30"
-                }`}
-              >
-                <div className="flex items-center">
-                  <span
-                    className={`text-2xl mr-3 ${
-                      index === 0
+          {donations.donors ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+              {donations.donors.map((donor, index) => (
+                <div
+                  key={index}
+                  className={`flex items-center justify-between p-4 rounded-xl border transition-all hover:scale-105 ${
+                    index === 0
+                      ? "bg-gradient-to-r from-yellow-900/50 to-yellow-800/50 border-yellow-500/50"
+                      : index === 1
+                      ? "bg-gradient-to-r from-gray-700/50 to-gray-600/50 border-gray-400/50"
+                      : index === 2
+                      ? "bg-gradient-to-r from-amber-900/50 to-amber-800/50 border-amber-500/50"
+                      : "bg-gray-800/50 border-gray-600/30"
+                  }`}
+                >
+                  <div className="flex items-center">
+                    <span
+                      className={`text-2xl mr-3 ${
+                        index === 0
+                          ? "🥇"
+                          : index === 1
+                          ? "🥈"
+                          : index === 2
+                          ? "🥉"
+                          : "💎"
+                      }`}
+                    >
+                      {index === 0
                         ? "🥇"
                         : index === 1
                         ? "🥈"
                         : index === 2
                         ? "🥉"
-                        : "💎"
+                        : "💎"}
+                    </span>
+                    <div>
+                      <div
+                        className="font-semibold text-white"
+                        style={{ fontFamily: "Goldman" }}
+                      >
+                        {donor.name}
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className={`font-bold ${
+                      index < 3 ? "text-yellow-400" : "text-cyan-400"
                     }`}
                   >
-                    {index === 0
-                      ? "🥇"
-                      : index === 1
-                      ? "🥈"
-                      : index === 2
-                      ? "🥉"
-                      : "💎"}
-                  </span>
-                  <div>
-                    <div className="font-semibold text-white">{donor.name}</div>
-                    <div className="text-sm text-gray-300">#{index + 1}</div>
+                    {formatCurrency(donor.amount)}
                   </div>
                 </div>
-                <div
-                  className={`font-bold ${
-                    index < 3 ? "text-yellow-400" : "text-cyan-400"
-                  }`}
-                >
-                  {formatCurrency(donor.amount)}
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <p>Chưa có thông tin</p>
+          )}
 
           <div className="text-center">
             <button
-              onClick={handleViewFullDonorList}
+              onClick={() =>
+                window.open(
+                  "https://docs.google.com/spreadsheets/d/1arWnOUafQu4oFohvOWF1zRZab504pB8cHIberd0gR9E/edit?gid=57279958#gid=57279958",
+                  "_blank",
+                  "noopener,noreferrer"
+                )
+              }
               className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-8 py-3 rounded-full font-semibold transition-all transform hover:scale-105 flex items-center mx-auto"
+              style={{ fontFamily: "Goldman" }}
             >
-              <Gift className="w-5 h-5 mr-2" />
-              Xem danh sách đầy đủ
-              <ExternalLink className="w-4 h-4 ml-2" />
+              Full List Donors
             </button>
           </div>
         </div>
@@ -499,7 +612,9 @@ const CosmicFundraisingWebsite = () => {
         <div className="text-center mt-16 pb-8">
           <div className="flex justify-center items-center space-x-2 mb-4">
             <Star className="w-4 h-4 text-yellow-400 animate-pulse" />
-            <span className="text-gray-400">Cảm ơn sự ủng hộ của bạn</span>
+            <span className="text-gray-400" style={{ fontFamily: "Goldman" }}>
+              Cảm ơn sự ủng hộ của bạn
+            </span>
             <Star className="w-4 h-4 text-yellow-400 animate-pulse" />
           </div>
         </div>

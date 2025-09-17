@@ -1,18 +1,16 @@
 // src/components/DonationSection.tsx
-import { Box, Card, Typography, Divider, Grid } from "@mui/material";
+import { Box, Card, Typography, Grid } from "@mui/material";
 
 export default function DonationSection() {
   return (
-    <Box sx={{ py: 6, px: 2 }}>
+    <Box sx={{ py: 6, px: 0 }} className="container mx-auto px-4">
       <Card
         sx={{
-          width: { xs: "95%", sm: "90%" },
-          maxWidth: "1200px",
-          margin: "auto",
-          padding: { xs: 3, sm: 5 },
-          borderRadius: "15px",
+          p: { xs: 3, sm: 5 },
+          borderRadius: "20px",
           backgroundColor: "rgba(0,0,0,0.6)",
-          boxShadow: 3,
+          border: "1px solid rgba(236,72,153,0.3)",
+          boxShadow: "0 8px 25px rgba(0,0,0,0.5)",
         }}
       >
         <Typography
@@ -29,19 +27,20 @@ export default function DonationSection() {
           💳 DONATE INFORMATION 💳
         </Typography>
 
-        <Grid container spacing={6}>
+        <Grid container spacing={6} justifyContent="center" alignItems="center">
           {/* Quỹ 1 */}
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6} display="flex" justifyContent="center">
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
+                flexDirection: "column",
                 alignItems: "center",
+                textAlign: "center",
                 gap: 2,
+                maxWidth: 300,
               }}
             >
-              {/* Thông tin */}
-              <Box sx={{ flex: 1 }}>
+              <Box>
                 <Typography
                   variant="h6"
                   sx={{
@@ -57,8 +56,7 @@ export default function DonationSection() {
                 <Typography
                   sx={{
                     fontFamily: "Goldman",
-                    fontSize: { xs: "0.8em", sm: "1em" },
-
+                    fontSize: "0.9em",
                     color: "whitesmoke",
                   }}
                 >
@@ -67,8 +65,7 @@ export default function DonationSection() {
                 <Typography
                   sx={{
                     fontFamily: "Goldman",
-                    fontSize: { xs: "0.8em", sm: "1em" },
-
+                    fontSize: "0.9em",
                     color: "whitesmoke",
                   }}
                 >
@@ -77,22 +74,20 @@ export default function DonationSection() {
                 <Typography
                   sx={{
                     fontFamily: "Goldman",
-                    fontSize: { xs: "0.8em", sm: "1em" },
-
+                    fontSize: "0.9em",
                     color: "whitesmoke",
                   }}
                 >
                   TRAN HOANG PHUONG LINH
                 </Typography>
               </Box>
-              {/* QR Code */}
-              <Box sx={{ flexShrink: 0, textAlign: "center" }}>
+              <Box>
                 <img
                   src="/QRcode.svg"
-                  alt="QR Quỹ "
+                  alt="QR Quỹ Supper Fest"
                   style={{
-                    width: "150px",
-                    height: "150px",
+                    width: "160px",
+                    height: "160px",
                     borderRadius: "10px",
                   }}
                 />
@@ -101,17 +96,18 @@ export default function DonationSection() {
           </Grid>
 
           {/* Quỹ 2 */}
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6} display="flex" justifyContent="center">
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
+                flexDirection: "column",
                 alignItems: "center",
+                textAlign: "center",
                 gap: 2,
+                maxWidth: 300,
               }}
             >
-              {/* Thông tin */}
-              <Box sx={{ flex: 1 }}>
+              <Box>
                 <Typography
                   variant="h6"
                   sx={{
@@ -127,8 +123,7 @@ export default function DonationSection() {
                 <Typography
                   sx={{
                     fontFamily: "Goldman",
-                    fontSize: { xs: "0.8em", sm: "1em" },
-
+                    fontSize: "0.9em",
                     color: "whitesmoke",
                   }}
                 >
@@ -137,8 +132,7 @@ export default function DonationSection() {
                 <Typography
                   sx={{
                     fontFamily: "Goldman",
-                    fontSize: { xs: "0.8em", sm: "1em" },
-
+                    fontSize: "0.9em",
                     color: "whitesmoke",
                   }}
                 >
@@ -147,22 +141,20 @@ export default function DonationSection() {
                 <Typography
                   sx={{
                     fontFamily: "Goldman",
-                    fontSize: { xs: "0.8em", sm: "1em" },
+                    fontSize: "0.9em",
                     color: "whitesmoke",
                   }}
                 >
                   TRAN HOANG PHUONG LINH
                 </Typography>
               </Box>
-
-              {/* QR Code */}
-              <Box sx={{ flexShrink: 0, textAlign: "center" }}>
+              <Box>
                 <img
                   src="/QUYTONHOASEN.png"
                   alt="QR Quỹ Tôn Hoa Sen"
                   style={{
-                    width: "150px",
-                    height: "150px",
+                    width: "160px",
+                    height: "160px",
                     borderRadius: "10px",
                   }}
                 />
