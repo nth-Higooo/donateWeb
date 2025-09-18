@@ -378,19 +378,19 @@ const CosmicFundraisingWebsite = () => {
                   if (offset > donations.milestones.length / 2) {
                     position = offset - donations.milestones.length;
                   }
-
+                  const translateStep = `clamp(200px, 15vw, 350px)`;
                   return (
                     <div
                       key={index}
                       className="absolute transition-all duration-700 ease-in-out transform-gpu"
                       style={{
-                        left: "5%",
+                        left: "30%",
                         transform: `
-                translateX(${position * 450}px)
-                scale(${isActive ? 1 : 0.75})
-                rotateY(${position * 5}deg)
-                translateZ(${isActive ? 0 : -60}px)
-              `,
+  translateX(${position * 15}vw)   /* thay 200px bằng 15vw */
+  scale(${isActive ? 1 : 0.75})
+  rotateY(${position * 5}deg)
+  translateZ(${isActive ? 0 : -60}px)
+`,
                         zIndex: isActive ? 20 : 10 - Math.abs(position),
                         opacity: isActive ? 1 : 0.5,
                       }}
@@ -398,7 +398,7 @@ const CosmicFundraisingWebsite = () => {
                       <div
                         className="bg-gray-800/80 rounded-2xl p-2 flex flex-col items-center justify-center border border-gray-600/50 backdrop-blur-sm"
                         style={{
-                          width: "clamp(240px, 70vw, 400px)",
+                          width: "clamp(180px, 70vw, 220px)",
                           height: "clamp(200px, 55vw, 320px)",
                         }}
                       >
@@ -406,7 +406,7 @@ const CosmicFundraisingWebsite = () => {
                         <div
                           className="rounded-lg mb-4 flex items-center justify-center relative overflow-hidden border border-gray-500/40"
                           style={{
-                            width: "clamp(200px, 65vw, 380px)",
+                            width: "clamp(140px, 70vw, 200px)",
                             height: "clamp(140px, 45vw, 250px)",
                           }}
                         >
