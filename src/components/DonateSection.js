@@ -120,7 +120,7 @@ export default function DonationSection() {
                     mb: 1,
                   }}
                 >
-                  QUỸ TÔN HOA SEN
+                  QUỸ MÁI ẤM GIA ĐÌNH VIỆT
                 </Typography>
                 <Typography
                   sx={{
