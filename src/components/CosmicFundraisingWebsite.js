@@ -384,7 +384,7 @@ const CosmicFundraisingWebsite = () => {
                       key={index}
                       className="absolute transition-all duration-700 ease-in-out transform-gpu"
                       style={{
-                        left: "30%",
+                        left: "20%",
                         transform: `
   translateX(${position * 15}vw)   /* thay 200px bằng 15vw */
   scale(${isActive ? 1 : 0.75})
