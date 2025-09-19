@@ -1,5 +1,6 @@
 // src/components/DonationSection.tsx
 import { Box, Card, Typography, Grid } from "@mui/material";
+import { Star } from "lucide-react";
 
 export default function DonationSection() {
   return (
@@ -9,7 +10,7 @@ export default function DonationSection() {
           p: { xs: 3, sm: 5 },
           borderRadius: "20px",
           backgroundColor: "rgba(0,0,0,0.6)",
-          border: "1px solid rgba(236,72,153,0.3)",
+          // border: "1px solid rgba(236,72,153,0.3)",
           boxShadow: "0 8px 25px rgba(0,0,0,0.5)",
           width: "100%",
           maxWidth: "900px", // ✅ keep card centered and not too wide
@@ -164,6 +165,36 @@ export default function DonationSection() {
             </Box>
           </Grid>
         </Grid>
+
+        {/* Footer */}
+        <div className="text-center mt-8 pb-4">
+          <div className="flex justify-center items-center space-x-2 ">
+            <Star className="w-4 h-4 text-yellow-400 animate-pulse" />
+            <span className="text-gray-400" style={{ fontFamily: "Goldman" }}>
+              DÀNH CHÚT THỜI GIAN CHO TỤI MÌNH XIN ÍT THÔNG TIN NHÉ!
+            </span>
+            <Star className="w-4 h-4 text-yellow-400 animate-pulse" />
+          </div>
+        </div>
+        <div className="text-center ">
+          <button
+            onClick={() =>
+              window.open(
+                "https://forms.gle/pASscwpqM5GLWQQt9",
+                "_blank",
+                "noopener,noreferrer"
+              )
+            }
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 rounded-full font-semibold transition-all transform hover:scale-105 flex items-center mx-auto"
+            style={{
+              fontFamily: "Goldman",
+              padding: "clamp(0.5rem, 2vw, 0.75rem) clamp(1.5rem, 5vw, 2rem)", // ✅ responsive padding
+              fontSize: "clamp(0.9rem, 2.5vw, 1.1rem)", // ✅ responsive text
+            }}
+          >
+            ĐIỀN THÔNG TIN Ở ĐÂY
+          </button>
+        </div>
       </Card>
     </Box>
   );

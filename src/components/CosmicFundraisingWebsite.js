@@ -36,7 +36,6 @@ const CosmicFundraisingWebsite = () => {
       },
     ],
   });
-
   const [currentSlide, setCurrentSlide] = useState(0);
   const [scrollY, setScrollY] = useState(0);
   const containerRef = useRef(null);
@@ -55,28 +54,12 @@ const CosmicFundraisingWebsite = () => {
         // const data = await response.json();
 
         // For now, using mock data - replace this with actual API call
-        const mockData = {
-          total: 15000000,
-          donors: [
-            { name: "Nguyễn Văn A", amount: 5000000 },
-            { name: "Trần Thị B", amount: 3000000 },
-            { name: "Lê Văn C", amount: 2500000 },
-            { name: "Phạm Thị D", amount: 2000000 },
-            { name: "Hoàng Văn E", amount: 1500000 },
-            { name: "Vũ Thị F", amount: 1200000 },
-            { name: "Đặng Văn G", amount: 1000000 },
-            { name: "Bùi Thị H", amount: 800000 },
-            { name: "Ngô Văn I", amount: 600000 },
-            { name: "Đinh Thị K", amount: 500000 },
-          ],
-        };
 
         const updatedMilestones = donations.milestones.map((milestone) => ({
           ...milestone,
         }));
 
         setDonations({
-          ...mockData,
           milestones: updatedMilestones,
         });
       } catch (error) {
@@ -116,15 +99,17 @@ const CosmicFundraisingWebsite = () => {
 
         // 1. Tổng tiền
         const totalRow = rows.find((r) => r.includes("TOTAL"));
-
+        console.log("totalRow", totalRow);
         let total = 0;
+        let updateTime;
         if (totalRow) {
+          updateTime = totalRow[1] || "Không tìm thấy";
           const totalStr = totalRow[3] || "0"; // ✅ always column 3
           total = parseInt(totalStr.replace(/[^\d]/g, "")) || 0;
         }
 
         // 2. Donors list
-        const donorRows = rows.slice(4);
+        const donorRows = rows.slice(3);
 
         const donors = donorRows
           .map((r) => {
@@ -156,6 +141,7 @@ const CosmicFundraisingWebsite = () => {
           donors,
           milestones: updatedMilestones,
           hoaSenFund,
+          updateTime,
         });
       } catch (error) {
         console.error("❌ Error fetching data from Google Sheets:", error);
@@ -295,8 +281,16 @@ const CosmicFundraisingWebsite = () => {
 
         {/* Donation Progress Card */}
         <div
-          className="bg-black/30 backdrop-blur-lg border border-purple-500/30 rounded-3xl p-5 mb-12 shadow-2xl glass"
-          style={{ transform: `translateY(${scrollY * 0.05}px)` }}
+          className="bg-black/30 backdrop-blur-lg border border-purple-500/30 rounded-3xl p-5 mb-12 shadow-2xl glass  justify-center mx-auto"
+          style={{
+            transform: `translateY(${scrollY * 0.05}px)`,
+            p: { xs: 3, sm: 5 },
+            borderRadius: "20px",
+            backgroundColor: "rgba(0,0,0,0.6)",
+            boxShadow: "0 8px 25px rgba(0,0,0,0.5)",
+            width: "100%",
+            maxWidth: "900px", // ✅ keep card centered and not too wide
+          }}
         >
           <div className="text-center mb-8">
             <h1
@@ -378,19 +372,19 @@ const CosmicFundraisingWebsite = () => {
                   if (offset > donations.milestones.length / 2) {
                     position = offset - donations.milestones.length;
                   }
-                  const translateStep = `clamp(200px, 15vw, 350px)`;
+
                   return (
                     <div
                       key={index}
                       className="absolute transition-all duration-700 ease-in-out transform-gpu"
                       style={{
-                        left: "20%",
+                        left: "50%", // luôn xuất phát từ giữa
                         transform: `
-  translateX(${position * 15}vw)   /* thay 200px bằng 15vw */
-  scale(${isActive ? 1 : 0.75})
-  rotateY(${position * 5}deg)
-  translateZ(${isActive ? 0 : -60}px)
-`,
+          translateX(calc(${position} * clamp(200px, 15vw, 350px) - 50%)) 
+          scale(${isActive ? 1 : 0.65})
+          rotateY(${position * 5}deg)
+          translateZ(${isActive ? 0 : -60}px)
+        `,
                         zIndex: isActive ? 20 : 10 - Math.abs(position),
                         opacity: isActive ? 1 : 0.5,
                       }}
@@ -542,8 +536,16 @@ const CosmicFundraisingWebsite = () => {
         </div>
 
         <div
-          className="bg-black/30 backdrop-blur-lg border border-pink-500/30 rounded-3xl p-6 mb-12 shadow-2xl glass text-center"
-          style={{ transform: `translateY(${scrollY * 0.04}px)` }}
+          className="bg-black/30 backdrop-blur-lg border border-pink-500/30 rounded-3xl p-6 mb-12 shadow-2xl glass text-center mx-auto"
+          style={{
+            transform: `translateY(${scrollY * 0.04}px)`,
+            p: { xs: 3, sm: 5 },
+            borderRadius: "20px",
+            backgroundColor: "rgba(0,0,0,0.6)",
+            boxShadow: "0 8px 25px rgba(0,0,0,0.5)",
+            width: "100%",
+            maxWidth: "900px", // ✅ keep card centered and not too wide
+          }}
         >
           <h2
             className="font-bold mb-4 text-pink-400"
@@ -573,8 +575,16 @@ const CosmicFundraisingWebsite = () => {
 
         {/* Top 10 Donors Card */}
         <div
-          className="bg-black/30 backdrop-blur-lg border border-purple-500/30 rounded-3xl p-8 mb-12 shadow-2xl glass"
-          style={{ transform: `translateY(${scrollY * 0.02}px)` }}
+          className="bg-black/30 backdrop-blur-lg border border-purple-500/30 rounded-3xl p-8 mb-12 shadow-2xl glass mx-auto"
+          style={{
+            transform: `translateY(${scrollY * 0.02}px)`,
+            p: { xs: 3, sm: 5 },
+            borderRadius: "20px",
+            backgroundColor: "rgba(0,0,0,0.6)",
+            boxShadow: "0 8px 25px rgba(0,0,0,0.5)",
+            width: "100%",
+            maxWidth: "900px", // ✅ keep card centered and not too wide
+          }}
         >
           <div className="text-center mb-8">
             <Users
@@ -593,6 +603,18 @@ const CosmicFundraisingWebsite = () => {
             >
               🏆 TOP 10 DONORS 🏆
             </h2>
+
+            {/* Footer */}
+            <div className="text-center mx-auto">
+              <div className="flex justify-center items-center space-x-2 mb-4">
+                <span
+                  className="text-gray-200"
+                  style={{ fontFamily: "Goldman" }}
+                >
+                  Cập nhật lần cuối: {donations.updateTime}
+                </span>
+              </div>
+            </div>
           </div>
 
           {donations.donors ? (
@@ -678,17 +700,6 @@ const CosmicFundraisingWebsite = () => {
         </div>
 
         <DonationSection />
-
-        {/* Footer */}
-        <div className="text-center mt-16 pb-8">
-          <div className="flex justify-center items-center space-x-2 mb-4">
-            <Star className="w-4 h-4 text-yellow-400 animate-pulse" />
-            <span className="text-gray-400" style={{ fontFamily: "Goldman" }}>
-              Cảm ơn sự ủng hộ của bạn
-            </span>
-            <Star className="w-4 h-4 text-yellow-400 animate-pulse" />
-          </div>
-        </div>
       </div>
     </div>
   );
