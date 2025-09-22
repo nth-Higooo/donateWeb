@@ -54,7 +54,7 @@ export default function DonationSection() {
                     mb: 1,
                   }}
                 >
-                  SUPPERFEST
+                  SUPPERFES
                 </Typography>
                 <Typography
                   sx={{
@@ -171,7 +171,7 @@ export default function DonationSection() {
           <div className="flex justify-center items-center space-x-2 ">
             <Star className="w-4 h-4 text-yellow-400 animate-pulse" />
             <span className="text-gray-400" style={{ fontFamily: "Goldman" }}>
-              DÀNH CHÚT THỜI GIAN CHO TỤI MÌNH XIN ÍT THÔNG TIN GỬI QUÀ NHÉ!
+              DÀNH CHÚT THỜI GIAN CHO TỤI MÌNH XIN THÔNG TIN GỬI QUÀ NHÉ!
             </span>
             <Star className="w-4 h-4 text-yellow-400 animate-pulse" />
           </div>
