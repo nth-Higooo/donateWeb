@@ -11,22 +11,22 @@ const CosmicFundraisingWebsite = () => {
     // Milestones
     milestones: [
       {
-        amount: 2000000,
+        amount: 1250000,
         title: "QUÀ KHAI TRƯƠNG",
         image: "/api/placeholder/300/200",
-        completed: false,
+        completed: true,
       },
       {
         amount: 19000000,
         title: "BOOTH CHECKIN",
         image: "/api/placeholder/300/200",
-        completed: false,
+        completed: null,
       },
       {
         amount: 7000000,
         title: "LỀU & GIFT MINI GAME",
         image: "/api/placeholder/300/200",
-        completed: false,
+        completed: null,
       },
       {
         amount: null, // mốc cuối để ?????????
@@ -130,19 +130,14 @@ const CosmicFundraisingWebsite = () => {
           hoaSenFund = parseInt(fundStr.replace(/[^\d]/g, "")) || 0;
         }
 
-        // 4. Milestones
-        const updatedMilestones = donations.milestones.map((m) => ({
-          ...m,
-          completed: false,
-        }));
-
-        setDonations({
+        setDonations((prev) => ({
+          ...prev, // keep existing state
           total,
           donors,
-          milestones: updatedMilestones,
           hoaSenFund,
           updateTime,
-        });
+          milestones: prev.milestones, // keep your milestone.completed values
+        }));
       } catch (error) {
         console.error("❌ Error fetching data from Google Sheets:", error);
       }
@@ -470,8 +465,10 @@ const CosmicFundraisingWebsite = () => {
                         {/* Status */}
                         <div
                           className={`mt-2 px-3 py-1 rounded-full ${
-                            milestone.completed
+                            milestone.completed === true
                               ? "bg-green-900/50 text-green-400 border border-green-500/50"
+                              : milestone.completed === null
+                              ? "bg-yellow-900/50 text-yellow-400 border border-yellow-500/50"
                               : "bg-gray-700/50 text-gray-300 border border-gray-600/50"
                           }`}
                           style={{
@@ -479,9 +476,11 @@ const CosmicFundraisingWebsite = () => {
                             fontSize: "clamp(0.7rem, 1.5vw, 1rem)",
                           }}
                         >
-                          {milestone.completed
+                          {milestone.completed === true
                             ? "✅ Completed ✅"
-                            : "⏳Pending⏳"}
+                            : milestone.completed === null
+                            ? "💰 Funding 💰"
+                            : "⏳ Pending ⏳"}
                         </div>
                       </div>
                     </div>
