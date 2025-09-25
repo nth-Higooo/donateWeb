@@ -54,7 +54,7 @@ export default function DonationSection() {
                     mb: 1,
                   }}
                 >
-                  SUPPERFES
+                  SUPERFEST
                 </Typography>
                 <Typography
                   sx={{
