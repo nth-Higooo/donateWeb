@@ -304,7 +304,7 @@ const CosmicFundraisingWebsite = () => {
                 fontSize: "clamp(1.5rem, 3vw, 2.5rem)", // ✅ responsive
               }}
             >
-              SUPPERFES PROJECT
+              SUPERFEST PROJECT
             </h1>
 
             <p
