@@ -171,7 +171,7 @@ const CosmicFundraisingWebsite = () => {
   const getProgressPercentage = () => {
     // const validMilestones = donations.milestones.filter((m) => m.amount);
     // const maxMilestone = Math.max(...validMilestones.map((m) => m.amount));
-    const maxMilestone = 28000000;
+    const maxMilestone = 27250000;
     return Math.min((donations.total / maxMilestone) * 100, 100);
   };
 
