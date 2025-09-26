@@ -20,7 +20,7 @@ const CosmicFundraisingWebsite = () => {
         amount: 19000000,
         title: "BOOTH CHECKIN",
         image: "/api/placeholder/300/200",
-        completed: null,
+        completed: true,
       },
       {
         amount: 7000000,
