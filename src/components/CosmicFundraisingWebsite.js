@@ -26,7 +26,7 @@ const CosmicFundraisingWebsite = () => {
         amount: 7000000,
         title: "LỀU & GIFT MINI GAME",
         image: "/api/placeholder/300/200",
-        completed: null,
+        completed: true,
       },
       {
         amount: null, // mốc cuối để ?????????
