@@ -28,12 +28,12 @@ const CosmicFundraisingWebsite = () => {
         image: "/api/placeholder/300/200",
         completed: true,
       },
-      {
-        amount: null, // mốc cuối để ?????????
-        title: "SINH NHẬT",
-        image: "/api/placeholder/300/200",
-        completed: false,
-      },
+      // {
+      //   amount: null, // mốc cuối để ?????????
+      //   title: "SINH NHẬT",
+      //   image: "/api/placeholder/300/200",
+      //   completed: false,
+      // },
     ],
   });
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -99,7 +99,6 @@ const CosmicFundraisingWebsite = () => {
 
         // 1. Tổng tiền
         const totalRow = rows.find((r) => r.includes("TOTAL"));
-        console.log("totalRow", totalRow);
         let total = 0;
         let updateTime;
         if (totalRow) {
@@ -129,12 +128,18 @@ const CosmicFundraisingWebsite = () => {
           const fundStr = hoaSenRow[2] || "0"; // ✅ always column 2
           hoaSenFund = parseInt(fundStr.replace(/[^\d]/g, "")) || 0;
         }
-
+        const bdRow = rows.find((r) => r.includes("SINH NHẬT"));
+        let bdFund = 0;
+        if (bdRow) {
+          const fundStr = bdRow[2] || "0"; // ✅ always column 2
+          bdFund = parseInt(fundStr.replace(/[^\d]/g, "")) || 0;
+        }
         setDonations((prev) => ({
           ...prev, // keep existing state
           total,
           donors,
           hoaSenFund,
+          bdFund,
           updateTime,
           milestones: prev.milestones, // keep your milestone.completed values
         }));
@@ -571,6 +576,44 @@ const CosmicFundraisingWebsite = () => {
             />
           </div>
         </div>
+        {/* 
+        <div
+          className="bg-black/30 backdrop-blur-lg border border-pink-500/30 rounded-3xl p-6 mb-12 shadow-2xl glass text-center mx-auto"
+          style={{
+            transform: `translateY(${scrollY * 0.04}px)`,
+            p: { xs: 3, sm: 5 },
+            borderRadius: "20px",
+            backgroundColor: "rgba(0,0,0,0.6)",
+            boxShadow: "0 8px 25px rgba(0,0,0,0.5)",
+            width: "100%",
+            maxWidth: "900px", // ✅ keep card centered and not too wide
+          }}
+        >
+          <h2
+            className="font-bold mb-4 text-cyan-400"
+            style={{
+              fontFamily: '"Rowdies","Potta One", sans-serif',
+              fontSize: "clamp(1.2rem, 3vw, 2.5rem)", // ✅ responsive title
+            }}
+          >
+            PROJECT SINH NHẬT
+          </h2>
+
+          <div
+            className="font-extrabold text-white-400 drop-shadow-lg"
+            style={{
+              fontSize: "clamp(2rem, 5vw, 3.5rem)", // ✅ responsive số tiền
+              fontFamily: "Goldman",
+            }}
+          >
+            <CountUp
+              end={donations.bdFund}
+              duration={5}
+              separator=","
+              suffix=" VND"
+            />
+          </div>
+        </div> */}
 
         {/* Top 10 Donors Card */}
         <div
