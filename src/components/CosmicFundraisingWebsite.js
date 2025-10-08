@@ -295,9 +295,18 @@ const CosmicFundraisingWebsite = () => {
           <h2
             className="font-bold mb-4 text-cyan-400"
             style={{
-              fontFamily: '"Rowdies","Potta One", sans-serif',
-              fontSize: "clamp(1.2rem, 3vw, 2.5rem)", // ✅ responsive title
-            }}
+                fontFamily: '"Rowdies","Potta One", sans-serif',
+                textShadow: `
+      0 0 6px rgba(113, 255, 255, 1),
+      0 0 12px rgba(0, 200, 255, 0.7),
+      0 0 20px rgba(230, 249, 255, 0.13)
+    `,
+                lineHeight: "1.2",
+                letterSpacing: "0.05em",
+                animation:
+                  "pulse 0.8s infinite ease-in-out, glow 3s infinite alternate",
+                fontSize: "clamp(1.5rem, 3vw, 2.5rem)", // ✅ responsive
+              }}
           >
             PROJECT SINH NHẬT
           </h2>
