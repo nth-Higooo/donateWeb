@@ -28,12 +28,7 @@ const CosmicFundraisingWebsite = () => {
         image: "/api/placeholder/300/200",
         completed: true,
       },
-      {
-        amount: null, // mốc cuối để ?????????
-        title: "SINH NHẬT",
-         image: "/api/placeholder/300/200",
-        completed: false,
-      },
+     
     ],
   });
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -292,24 +287,24 @@ const CosmicFundraisingWebsite = () => {
             maxWidth: "900px", // ✅ keep card centered and not too wide
           }}
         >
-          <h2
-            className="font-bold mb-4 text-cyan-400"
-            style={{
-                fontFamily: '"Rowdies","Potta One", sans-serif',
-                textShadow: `
-      0 0 6px rgba(113, 255, 255, 1),
-      0 0 12px rgba(0, 200, 255, 0.7),
-      0 0 20px rgba(230, 249, 255, 0.13)
+<h2
+  className="font-bold mb-4 text-pink-200"
+  style={{
+    fontFamily: '"Rowdies","Potta One", sans-serif',
+    textShadow: `
+      0 0 6px rgba(255, 182, 193, 1),
+      0 0 12px rgba(255, 182, 193, 0.7),
+      0 0 20px rgba(255, 192, 203, 0.3)
     `,
-                lineHeight: "1.2",
-                letterSpacing: "0.05em",
-                animation:
-                  "pulse 0.8s infinite ease-in-out, glow 3s infinite alternate",
-                fontSize: "clamp(1.5rem, 3vw, 2.5rem)", // ✅ responsive
-              }}
-          >
-            PROJECT SINH NHẬT
-          </h2>
+    lineHeight: "1.2",
+    letterSpacing: "0.05em",
+    animation:
+      "pulse 0.8s infinite ease-in-out, glow 3s infinite alternate",
+    fontSize: "clamp(1.5rem, 3vw, 2.5rem)", // ✅ responsive
+  }}
+>
+  PROJECT SINH NHẬT
+</h2>
 
           <div
             className="font-extrabold text-white-400 drop-shadow-lg"
